@@ -9,9 +9,10 @@ def train(
     adj_matrix: torch.Tensor,
     target_distance: torch.Tensor,
     epochs: int = 100,
+    option: str = "org"
 ) -> float:
     in_features = node_features.shape[-1]
-    model = SimpleGNNRegressor(in_features=in_features, hidden_dim=16)
+    model = SimpleGNNRegressor(in_features=in_features, hidden_dim=16,option=option)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
     criterion = nn.MSELoss()
 
@@ -31,4 +32,4 @@ def train(
 if __name__ == "__main__":
     data_path = Path("data/full_data.xlsx")
     x, adj, y_true = load_graph_excel(data_path)
-    train(x, adj, y_true, epochs=100)
+    train(x, adj, y_true, epochs=100,option="org") 
