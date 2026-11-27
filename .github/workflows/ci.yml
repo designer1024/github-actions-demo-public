@@ -1,0 +1,43 @@
+name: GNN Training Smoke Test
+
+# Automatically trigger on push or pull request to main
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.py'
+      - 'requirements-ci.txt'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.py'
+      - 'requirements-ci.txt'
+
+jobs:
+  smoke-test-training:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python with pip caching
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'requirements-ci.txt'
+
+      # 3. Install lightweight CPU-only dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-ci.txt
+
+      # 4. Run smoke tests with pytest
+      - name: Run pytest smoke tests
+        run: |
+          python -m pytest -v
