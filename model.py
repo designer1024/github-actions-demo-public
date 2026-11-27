@@ -24,4 +24,9 @@ class SimpleGNNRegressor(nn.Module):
 
     def fun(self, x: torch.Tensor) -> torch.Tensor:
         print("function is called")
+        x=self.fun_a(x)
+        return x
+
+    def fun_a(self, x: torch.Tensor) -> torch.Tensor:
+        print("function a is called")
         return x
